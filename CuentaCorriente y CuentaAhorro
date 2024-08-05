@@ -1,0 +1,31 @@
+class CuentaCorriente(CuentaBancaria):
+    def __init__(self, numero_cuenta, saldo, titular, descubierto):
+        super().__init__(numero_cuenta, saldo, titular)
+        self.descubierto = descubierto
+
+    def retirar(self, cantidad):
+        if cantidad > 0 and cantidad <= (self.saldo + self.descubierto):
+            self.saldo -= cantidad
+            print(f"Retiro de {cantidad} realizado. Nuevo saldo: {self.saldo}")
+        else:
+            raise ValueError("La cantidad a retirar excede el saldo y el descubierto permitido.")
+
+    def to_dict(self):
+        data = super().to_dict()
+        data["descubierto"] = self.descubierto
+        return data
+
+
+class CuentaAhorro(CuentaBancaria):
+    def __init__(self, numero_cuenta, saldo, titular, interes):
+        super().__init__(numero_cuenta, saldo, titular)
+        self.interes = interes
+
+    def aplicar_interes(self):
+        self.saldo += self.saldo * self.interes
+        print(f"Interés aplicado. Nuevo saldo: {self.saldo}")
+
+    def to_dict(self):
+        data = super().to_dict()
+        data["interes"] = self.interes
+        return data
