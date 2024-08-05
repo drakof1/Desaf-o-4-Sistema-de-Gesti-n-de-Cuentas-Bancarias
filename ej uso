@@ -1,0 +1,12 @@
+# Ejemplo de uso
+#gestion = GestionCuentas('cuentas_bancarias.json')
+
+#cuenta1 = CuentaCorriente("12345", 1000, "Juan Perez", 500)
+#cuenta2 = CuentaAhorro("67890", 2000, "Maria Lopez", 0.02)
+
+#gestion.agregar_cuenta(cuenta1)
+#gestion.agregar_cuenta(cuenta2)
+
+#cuenta_obtenida = gestion.obtener_cuenta("12345")
+#if cuenta_obtenida:
+    #cuenta_obtenida.mostrar_informacion()
