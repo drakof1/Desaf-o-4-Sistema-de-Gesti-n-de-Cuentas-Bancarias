@@ -1,0 +1,47 @@
+class GestionCuentas:
+    def __init__(self, archivo_datos):
+        self.archivo_datos = archivo_datos
+        self.cuentas = self.cargar_datos()
+
+    def cargar_datos(self):
+        if os.path.exists(self.archivo_datos):
+            with open(self.archivo_datos, 'r') as file:
+                data = json.load(file)
+                cuentas = []
+                for item in data:
+                    if "descubierto" in item:
+                        cuentas.append(CuentaCorriente(item["numero_cuenta"], item["saldo"], item["titular"], item["descubierto"]))
+                    elif "interes" in item:
+                        cuentas.append(CuentaAhorro(item["numero_cuenta"], item["saldo"], item["titular"], item["interes"]))
+                    else:
+                        cuentas.append(CuentaBancaria(item["numero_cuenta"], item["saldo"], item["titular"]))
+                return cuentas
+        return []
+
+    def guardar_datos(self):
+        data = [cuenta.to_dict() for cuenta in self.cuentas]
+        with open(self.archivo_datos, 'w') as file:
+            json.dump(data, file, indent=4)
+
+    def agregar_cuenta(self, cuenta):
+        self.cuentas.append(cuenta)
+        self.guardar_datos()
+
+    def obtener_cuenta(self, numero_cuenta):
+        for cuenta in self.cuentas:
+            if cuenta.numero_cuenta == numero_cuenta:
+                return cuenta
+        return None
+
+    def actualizar_cuenta(self, numero_cuenta, nueva_cuenta):
+        for i, cuenta in enumerate(self.cuentas):
+            if cuenta.numero_cuenta == numero_cuenta:
+                self.cuentas[i] = nueva_cuenta
+                self.guardar_datos()
+                return
+        raise ValueError("Cuenta no encontrada.")
+
+    def eliminar_cuenta(self, numero_cuenta):
+        self.cuentas = [cuenta for cuenta in self.cuentas if cuenta.numero_cuenta != numero_cuenta]
+        self.guardar_datos()
+
